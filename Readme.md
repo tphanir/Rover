@@ -25,10 +25,28 @@
 <hr>
 <h2 id="rover-description">Rover Description</h2>
 <ul>
-    <li><strong>Structure:</strong>The rover's 6-wheel drive system, combined with a triple bogie mechanism, offers enhanced maneuverability and stability over rough and uneven terrains. This design, constructed from MDF board, aluminum extrusions, and C-shaped mild steel, allows the rover to distribute weight evenly across its wheels, ensuring that it can tackle steep inclines and rocky landscapes with minimal risk of tipping. The triple bogie setup improves ground contact, enabling each wheel to independently respond to terrain changes, maintaining stability and grip even on highly irregular surfaces.
+    <li><strong>Structure:</strong> The rover's 6-wheel drive system, combined with a triple bogie mechanism, offers enhanced maneuverability and stability over rough and uneven terrains. This design, constructed from MDF board, aluminum extrusions, and C-shaped mild steel, allows the rover to distribute weight evenly across its wheels, ensuring that it can tackle steep inclines and rocky landscapes with minimal risk of tipping. The triple bogie setup improves ground contact, enabling each wheel to independently respond to terrain changes, maintaining stability and grip even on highly irregular surfaces.
+    <br><br>With these robust structural materials, the rover achieves a balance between lightweight agility and structural resilience, making it suitable for both exploratory research and environmental monitoring in challenging conditions.</li>
+    <li><strong>Navigation: The manual navigation of the robot through serial communication, using a control interface connected to the Jetson board. The program receives directional commands from an external controller via serial input, which it interprets to control the movement of the robot's motors. The movement options include forward, backward, left rotation, and right rotation, and each command is executed based on the received serial input.
 
-With these robust structural materials, the rover achieves a balance between lightweight agility and structural resilience, making it suitable for both exploratory research and environmental monitoring in challenging conditions.</li>
-    <li><strong>Navigation: </strong> .</li>
+<h3>Functions:</h3>
+<ul>
+    <li>move_forward(): Activates the motors to drive the robot forward.</li>
+    <li>move_backward(): Activates the motors to drive the robot backward.</li>
+    <li>stop(): Stops all motor activity, bringing the robot to a halt.</li>
+    <li>rotate_continuous(direction): Rotates the robot continuously in the specified direction ('left' or 'right') until a different command is received.</li>
+    <li>receive_data(): Listens for serial input data, which determines the direction of movement.</li>
+</ul>
+
+<p>The robot’s movements are controlled by the following commands received through serial input:</p>
+<ul>
+    <li><strong>'w':</strong> Move forward</li>
+    <li><strong>'s':</strong> Move backward</li>
+    <li><strong>'a':</strong> Rotate continuously to the left</li>
+    <li><strong>'d':</strong> Rotate continuously to the right</li>
+    <li><strong>'q':</strong> Stop the robot</li>
+    <li><strong>'exit':</strong> Exit the manual control loop and clean up resources</li>
+</ul> </strong> .</li>
     <li><strong>Obstacle Detection:</strong> <p>This project enables autonomous obstacle detection and navigation for a robot using a LiDAR sensor and motor control through Jetson.GPIO. The LiDAR scans the environment, and the distance and angle data are analyzed to detect obstacles. When an obstacle is identified within preset thresholds, the robot chooses a safe direction by rotating left or right and continues forward if the path is clear. Additionally, slope detection helps the robot assess and safely navigate uneven terrain.</p>
 
 <p>The robot’s movement functions allow it to move forward, reverse, or rotate to avoid obstacles. After avoiding an obstacle, the robot attempts to re-align to its original path for efficient navigation. This approach enables effective autonomous exploration in structured environments with basic obstacle avoidance and terrain adaptability.</p></li>
