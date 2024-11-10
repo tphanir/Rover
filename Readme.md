@@ -52,21 +52,49 @@
     <li><strong>45° Incline Sploe Climbing:</strong>
 One of the key features of this rover is its ability to climb slopes up to 45 degrees. The combination of the 6-wheel drive system and the triple bogie mechanism allows the rover to maintain traction and balance while ascending steep inclines. This capability is crucial for environments with uneven terrain, making the rover suitable for exploration in areas with challenging topography such as rocky landscapes, hills, or even simulated extraterrestrial environments.</li>
 
+
+
 </ul>
 
-<h2>Electronics Components</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Electronic Component</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>NVIDIA Jetson</strong> (e.g., Jetson Nano)</td>
+            <td>Onboard processing unit for running algorithms and controlling the rover's systems.</td>
+        </tr>
+        <tr>
+            <td><strong>Ultrasonic Distance Sensor</strong> (HC-SR04)</td>
+            <td>Measures distance to surrounding objects, used for obstacle detection.</td>
+        </tr>
+        <tr>
+            <td><strong>L298N Dual H-Bridge Motor Driver</strong></td>
+            <td>Powers and controls motors, enabling forward and backward movement.</td>
+        </tr>
+        <tr>
+            <td><strong>Orange High Torque DC Motors</strong> (555 series)</td>
+            <td>Provides torque for movement on various surfaces, including steep inclines.</td>
+        </tr>
+        <tr>
+            <td><strong>Radio Telemetry Module</strong> (3DR)</td>
+            <td>Enables wireless communication with remote control systems for telemetry data transmission.</td>
+        </tr>
+        <tr>
+            <td><strong>LiDAR Sensor</strong> (2D-YDLIDAR)</td>
+            <td>Scans 180 degrees for obstacle detection and mapping of the environment.</td>
+        </tr>
+        <tr>
+            <td><strong>NEO-6M GPS Module</strong></td>
+            <td>Provides accurate location data for autonomous navigation and geospatial tracking.</td>
+        </tr>
+    </tbody>
+</table>
 
-<p>The rover is equipped with various electronic components to support autonomous navigation and terrain exploration. The components used are as follows:</p>
-
-<ul>
-    <li><strong>NVIDIA Jetson</strong> (e.g., Jetson Nano): The onboard processing unit for running algorithms and controlling the rover's systems.</li>
-    <li><strong>Ultrasonic Distance Sensor</strong> (HC-SR04): Used for obstacle detection by measuring the distance between the rover and surrounding objects.</li>
-    <li><strong>L298N Dual H-Bridge Motor Driver</strong>: Powers and controls the rover's motors, allowing for precise movement in both directions (forward and backward).</li>
-    <li><strong>Orange High Torque DC Motors (555 series)</strong>: Provides the necessary torque to drive the rover on various surfaces, including steep inclines.</li>
-    <li><strong>Radio Telemetry Module</strong> (3DR): Enables wireless communication between the rover and remote control systems for telemetry data transmission.</li>
-    <li><strong>LiDAR Sensor</strong> (2D-YDLIDAR): Used for 180-degree scanning of the environment, aiding in obstacle detection and mapping.</li>
-    <li><strong>NEO-6M GPS Module</strong>: Provides accurate location data, enabling autonomous navigation and geospatial tracking.</li>
-</ul>
 
 <p>These components work together to ensure the rover can navigate difficult terrains, detect and avoid obstacles, and provide real-time feedback to operators through telemetry.</p>
 
