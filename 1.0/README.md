@@ -1,5 +1,5 @@
 
-<h1>Rover 1.0 </h1>
+<h1>Genesis </h1>
 
 <hr>
 
@@ -40,7 +40,7 @@
     <li><strong>'q':</strong> Stop the robot</li>
     <li><strong>'exit':</strong> Exit the manual control loop and clean up resources</li>
 </ul> </strong> .</li>
-    <li><strong>Obstacle Detection:</strong> <p>This project enables autonomous obstacle detection and navigation for a robot using a LiDAR sensor and motor control through Jetson.GPIO. The LiDAR scans the environment, and the distance and angle data are analyzed to detect obstacles. When an obstacle is identified within preset thresholds, the robot chooses a safe direction by rotating left or right and continues forward if the path is clear. Additionally, slope detection helps the robot assess and safely navigate uneven terrain.</p><p>The robot’s movement functions allow it to move forward, reverse, or rotate to avoid obstacles. After avoiding an obstacle, the robot attempts to re-align to its original path for efficient navigation. This approach enables effective autonomous exploration in structured environments with basic obstacle avoidance and terrain adaptability.</p></li>
+    <li><strong>Obstacle Detection & Avoidance:</strong> <p>This project enables autonomous obstacle detection and navigation for a robot using a LiDAR sensor and motor control through Jetson.GPIO. The LiDAR scans the environment, and the distance and angle data are analyzed to detect obstacles. When an obstacle is identified within preset thresholds, the robot chooses a safe direction by rotating left or right and continues forward if the path is clear. Additionally, slope detection helps the robot assess and safely navigate uneven terrain.</p><p>The robot’s movement functions allow it to move forward, reverse, or rotate to avoid obstacles. After avoiding an obstacle, the robot attempts to re-align to its original path for efficient navigation. This approach enables effective autonomous exploration in structured environments with basic obstacle avoidance and terrain adaptability.</p><img src="Hardware Results/Obstacle_Avoidance.gif" alt="This is an animated gif image, but it does not move"/> </li>
     <li><strong>Power Supply:</strong> LiPo 4S battery connected to the L298N motor driver for driving the motors with PWM signals from Jetson Nano.</li><br>
     <li><strong>45° Incline Sploe Climbing:</strong>
 One of the key features of this rover is its ability to climb slopes up to 45 degrees. The combination of the 6-wheel drive system and the triple bogie mechanism allows the rover to maintain traction and balance while ascending steep inclines. This capability is crucial for environments with uneven terrain, making the rover suitable for exploration in areas with challenging topography such as rocky landscapes, hills, or even simulated extraterrestrial environments.</li>
