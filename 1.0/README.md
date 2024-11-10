@@ -48,7 +48,7 @@ One of the key features of this rover is its ability to climb slopes up to 45 de
 
 <img src="Hardware Results/slope-climbing.gif" alt="This is an animated gif image, but it does not move"/>
 
-<h2 id="physical-components"">-</h2>
+<h2 id="physical-components""></h2>
 <table>
     <thead>
         <tr>
