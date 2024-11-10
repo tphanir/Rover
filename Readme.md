@@ -1,9 +1,5 @@
 
-<h1>Rover - Team Pravartak</h1>
-
-<p><strong>Rover</strong><br>
-<strong>Category:</strong> Rover<br>
-<strong>Institution:</strong> Visvesvaraya National Institute of Technology, Nagpur</p>
+<h1>Rover 1.0 </h1>
 
 <hr>
 
@@ -12,10 +8,7 @@
     <li><a href="#project-overview">Project Overview</a></li>
     <li><a href="#rover-description">Rover Description</a></li>
     <li><a href="#physical-components">Physical Components</a></li>
-    <li><a href="#software-components">Software Components</a></li>
     <li><a href="#additional-features">Additional Features</a></li>
-    <li><a href="#deviations">Deviations</a></li>
-    <li><a href="#media">Media</a></li>
 </ul>
 
 <hr>
@@ -96,19 +89,6 @@ One of the key features of this rover is its ability to climb slopes up to 45 de
 
 
 <p>These components work together to ensure the rover can navigate difficult terrains, detect and avoid obstacles, and provide real-time feedback to operators through telemetry.</p>
-
-<h2>Software Components</h2>
-
-<p>The rover's software stack integrates various libraries and tools to provide full control and functionality for autonomous navigation, communication, and data processing. The software components used are as follows:</p>
-
-<ul>
-    <li><strong>Autodesk Fusion 360</strong>: A powerful 3D CAD and CAM tool used for designing the rover's mechanical components. It enables precise modeling of parts, assemblies, and simulations to ensure the rover can withstand real-world conditions. Fusion 360 also supports collaboration for team projects, allowing easy sharing of design files.</li>
-    
-<li><strong>Serial Communication</strong> (Python Serial Library): The <code>serial</code> library in Python is used to handle communication between the rover and external devices like remote controllers, GPS modules, and other sensors. It enables the transmission of commands and data over UART, allowing real-time control and feedback.</li>
-    
-<li><strong>YDLIDAR SDK</strong>: The YDLIDAR library allows seamless integration of LiDAR sensors with the rover's onboard system. It is used to process data from the LiDAR sensor, providing distance measurements to aid in obstacle detection and mapping. The SDK supports various LiDAR models, and it is crucial for real-time environmental scanning, enabling the rover to navigate autonomously in dynamic surroundings.</li>
-</ul>
-
 
 
 
