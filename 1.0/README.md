@@ -93,7 +93,7 @@ One of the key features of this rover is its ability to climb slopes up to 45 de
 
 
 
-<h2 id="project-overview">Additional Feature</h2><p>Modular Design: The rover’s modular design allows easy customization and upgrades, with interchangeable components like the chassis, motors, sensors, and electronics. This makes maintenance simpler and enables future enhancements without redesigning the whole system.</p>
+<h2 id="additional-features">Additional Feature</h2><p>Modular Design: The rover’s modular design allows easy customization and upgrades, with interchangeable components like the chassis, motors, sensors, and electronics. This makes maintenance simpler and enables future enhancements without redesigning the whole system.</p>
 
 <p>Lightweight: The rover's lightweight design, using MDF board for the chassis and aluminum extrusions for structure, enhances performance and maneuverability. It improves speed, agility, and reduces power consumption, allowing longer operational time and efficient navigation across various terrains.</p></li>
 
