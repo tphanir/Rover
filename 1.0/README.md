@@ -9,6 +9,7 @@
     <li><a href="#rover-description">Rover Description</a></li>
     <li><a href="#physical-components">Electronic Components</a></li>
     <li><a href="#additional-features">Additional Features</a></li>
+    <li><a href="#team-members">Team Members</a></li>
 </ul>
 
 <hr>
@@ -97,7 +98,7 @@ One of the key features of this rover is its ability to climb slopes up to 45 de
 
 <p>Lightweight: The rover's lightweight design, using MDF board for the chassis and aluminum extrusions for structure, enhances performance and maneuverability. It improves speed, agility, and reduces power consumption, allowing longer operational time and efficient navigation across various terrains.</p></li>
 
-<h2>Team Members</h2>
+<h2 id='team-members'>Team Members</h2>
 <ol>
 <li><a href="https://www.linkedin.com/in/yuvraj-gupta11/" target="_blank">Yuvraj Gupta</a></li>
 <li><a href="mailto:phanirajtelukunta@gmail.com" target="_blank">Telukunta Phani Raj</a></li>
