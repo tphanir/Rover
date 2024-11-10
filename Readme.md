@@ -51,10 +51,9 @@
     <li><strong>Power Supply:</strong> LiPo 4S battery connected to the L298N motor driver for driving the motors with PWM signals from Jetson Nano.</li><br>
     <li><strong>45° Incline Sploe Climbing:</strong>
 One of the key features of this rover is its ability to climb slopes up to 45 degrees. The combination of the 6-wheel drive system and the triple bogie mechanism allows the rover to maintain traction and balance while ascending steep inclines. This capability is crucial for environments with uneven terrain, making the rover suitable for exploration in areas with challenging topography such as rocky landscapes, hills, or even simulated extraterrestrial environments.</li>
-
-
-
 </ul>
+
+<img src="slope-climbing.gif" alt="This is an animated gif image, but it does not move"/>
 
 <table>
     <thead>
