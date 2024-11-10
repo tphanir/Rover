@@ -1,10 +1,6 @@
 
 <h1>Rover - Team Pravartak</h1>
 
-<p><strong>Rover</strong><br>
-<strong>Category:</strong> Rover<br>
-<strong>Institution:</strong> Visvesvaraya National Institute of Technology, Nagpur</p>
-
 <hr>
 
 <h2>Table of Contents</h2>
