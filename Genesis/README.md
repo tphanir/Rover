@@ -67,7 +67,7 @@
             <td>Scans 180 degrees for obstacle detection and mapping of the environment.</td>
         </tr>
         <tr>
-            <td><strong><a href="https://robu.in/product/neo-6m-gps-module-with-eprom-normal-quality/?gad_source=1&gclid=Cj0KCQiA88a5BhDPARIsAFj595hh9FolRdsCBVi75Ao_LT7rmVTv07fNt9tugggRdmlEWDNyp99YH_QaAjIGEALw_wcB">NEO-6M GPS Module</strong></td>
+            <td><strong><a href="https://robu.in/product/neo-6m-gps-module-with-eprom-normal-quality/?gad_source=1&gclid=Cj0KCQiA88a5BhDPARIsAFj595hh9FolRdsCBVi75Ao_LT7rmVTv07fNt9tugggRdmlEWDNyp99YH_QaAjIGEALw_wcB">GPS Module</strong> (NEO-6M)</td>
             <td>Provides accurate location data for autonomous navigation and geospatial tracking.</td>
         </tr>
     </tbody>
