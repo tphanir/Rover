@@ -15,6 +15,9 @@
 </ul>
 
 <hr>
+<h2 id="cad-model">CAD Model</h2>
+
+<hr>
 <h2 id="results">Results</h2>
 <p>Obstacle Detection & Avoidance</p>
 <img src="Hardware Results/Obstacle_Avoidance.gif" alt="This is an animated gif image, but it does not move"/>
