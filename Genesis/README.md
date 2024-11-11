@@ -19,11 +19,17 @@
 
 <hr>
 <h2 id="results">Results</h2>
-<p>Obstacle Detection & Avoidance</p>
+<p>Obstacle Detection & Avoidance</p> (Pending to add simultaneous LiDAR view)
 <img src="Hardware Results/Obstacle_Avoidance.gif" alt="This is an animated gif image, but it does not move"/>
 
-<p>Ascension of Slopes</p>
+<p>Obstacle Traversal</p>
+
+<p>Crater Avoidance</p>
+
+<p>Ascent & Descent of Slopes</p>
 <img src="Hardware Results/slope-climbing.gif" alt="This is an animated gif image, but it does not move"/>
+
+<p>GPS Guided Waypoint Navigation</p>
 
 <hr>
 <h2 id="features">Features</h2>
