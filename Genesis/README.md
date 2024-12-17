@@ -23,6 +23,7 @@
 <img src="Hardware Results/Obstacle_Avoidance.gif" alt="This is an animated gif image, but it does not move"/>
 
 <p>Obstacle Traversal</p>
+<img src="ObstacleTraversal-ezgif.com-video-to-gif-converter.gif" alt="This is an animated gif image, but it does not move"/>
 
 <p>Crater Avoidance</p>
 
