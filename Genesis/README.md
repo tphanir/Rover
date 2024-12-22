@@ -25,12 +25,8 @@
 <p>Obstacle Traversal</p>
 <img src="ObstacleTraversal-ezgif.com-video-to-gif-converter.gif" alt="This is an animated gif image, but it does not move"/>
 
-<p>Crater Avoidance</p>
-
 <p>Ascent & Descent of Slopes</p>
 <img src="Hardware Results/slope-climbing.gif" alt="This is an animated gif image, but it does not move"/>
-
-<p>GPS Guided Waypoint Navigation</p>
 
 <hr>
 <h2 id="features">Features</h2>
