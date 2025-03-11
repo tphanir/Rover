@@ -1,24 +1,16 @@
 
-<h1>Rover - Team Pravartak</h1>
+<h1>Rovers </h1>
 
-<p><strong>Rover</strong><br>
-<strong>Category:</strong> Rover<br>
-<strong>Institution:</strong> Visvesvaraya National Institute of Technology, Nagpur</p>
-
+This repository offers an overview of all the rovers developed by Team Pravartak at IvLabs.
 <hr>
 
 <h2>Table of Contents</h2>
 <ul>
-    <li><a href="#project-overview">Project Overview</a></li>
-    <li><a href="#rover-description">Rover Description</a></li>
-    <li><a href="#physical-components">Physical Components</a></li>
-    <li><a href="#software-components">Software Components</a></li>
-    <li><a href="#additional-features">Additional Features</a></li>
-    <li><a href="#deviations">Deviations</a></li>
-    <li><a href="#media">Media</a></li>
+    <li><a href="#genesis">Genesis</a></li>
 </ul>
 
 <hr>
+
 <h2 id="project-overview">Project Overview</h2>
 <p>Team Pravartak developed a rover prototype for robust exploration on uneven terrains and inclines up to 45 degrees, capabilities in autonomous navigation, obstacle detection, and adaptability to harsh environments.</p>
 
@@ -110,21 +102,9 @@ One of the key features of this rover is its ability to climb slopes up to 45 de
 <li><strong>YDLIDAR SDK</strong>: The YDLIDAR library allows seamless integration of LiDAR sensors with the rover's onboard system. It is used to process data from the LiDAR sensor, providing distance measurements to aid in obstacle detection and mapping. The SDK supports various LiDAR models, and it is crucial for real-time environmental scanning, enabling the rover to navigate autonomously in dynamic surroundings.</li>
 </ul>
 
+=======
+<h2 id="genesis"><a href="https://github.com/tphanir/Rover/tree/master/Genesis">Genesis</a></h2>
+<p>This rover prototype, designed for exploration on uneven terrains and inclines of up to 45 degrees, features GPS-guided autonomous navigation and obstacle detection capabilities. It was developed as part of Gujarat Robofest 4.0.</p>
 
 
-
-<h2 id="project-overview">Additional Feature</h2><p>Modular Design: The rover’s modular design allows easy customization and upgrades, with interchangeable components like the chassis, motors, sensors, and electronics. This makes maintenance simpler and enables future enhancements without redesigning the whole system.</p>
-
-<p>Lightweight: The rover's lightweight design, using MDF board for the chassis and aluminum extrusions for structure, enhances performance and maneuverability. It improves speed, agility, and reduces power consumption, allowing longer operational time and efficient navigation across various terrains.</p></li>
-
-<h2>Team Members</h2>
-<ol>
-<li><a href="https://www.linkedin.com/in/yuvraj-gupta11/" target="_blank">Yuvraj Gupta</a></li>
-<li><a href="mailto:phanirajtelukunta@gmail.com" target="_blank">Telukunta Phani Raj</a></li>
-<li><a href="https://www.linkedin.com/in/koyaneni-yaswanth-988a92220/" target="_blank">Koyaneni Yashwant</a></li>
-<li><a href="https://www.linkedin.com/in/shubham-pandere-72b240259/?originalSubdomain=in">Shubham Pandere</a></li>
-<li><a href="https://www.linkedin.com/in/aiden-dsouza/" target="_blank">Aiden D'souza</a></li>
-</ol>
-
-<hr>
-<hr>
+![IMG_3421](https://github.com/user-attachments/assets/afd8b34e-625a-4f4e-932b-1cae887e4e3e)
