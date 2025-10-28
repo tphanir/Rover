@@ -36,5 +36,6 @@ Handles inputs, communication, and command processing:
 - **echo.sh** — Simply echoes the VoiceNav/data.txt content.
 
 ### main.py
-Main entry point — connects all modules for complete rover operation.
+- Main entry point — connects all modules for complete rover operation.
+
 ---
