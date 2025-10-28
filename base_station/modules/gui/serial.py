@@ -23,7 +23,7 @@ class SerialHandler:
         try:
             self.serial_connection = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
             print(f"[INFO] Serial connection opened on {self.port} at {self.baud_rate} baud.")
-            #self.write(f'[INFO] Serial Radio connection established on {self.port} at {self.baud_rate} baud.\n')
+            self.write(f'[INFO] Serial Radio connection established on {self.port} at {self.baud_rate} baud.\n')
         except serial.SerialException as e:
             print(f"[ERROR] Failed to open serial port {self.port}:\n{e}")
 
@@ -33,7 +33,7 @@ class SerialHandler:
         """
         if self.serial_connection and self.serial_connection.is_open:
             print(f"[INFO] Serial connection on {self.port} closed.")
-            #self.write(f'[INFO] Radio connection on {self.port} closed.\n')
+            self.write(f'[INFO] Radio connection on {self.port} closed.\n')
             self.serial_connection.close()
         else:
             print(f"[WARNING] Serial connection on {self.port} is already closed.")

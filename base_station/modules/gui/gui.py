@@ -1,92 +1,18 @@
 import tkinter as tk
 from tkinter import ttk, messagebox, PhotoImage
+
 from PIL import Image, ImageTk
-import serial
-from serial.tools import list_ports
+
 import time
+from serial.tools import list_ports
+from gui.serial import SerialHandler
 
-# Constants for Styling
-TITLE_FONT = ("Segoe UI", 36, "bold") 
-LABEL_FONT = ("Segoe UI", 14) 
-BG_COLOR = "#2C3E50"
-FG_COLOR = "#FFFFFF"
+from gui.config import FG_COLOR, BG_COLOR
+from gui.config import TITLE_FONT, LABEL_FONT
 
+from gui.buttons import CircularButton
 
-class SerialHandler:
-    def __init__(self, port, baud_rate=57600, timeout=1):
-        """
-        Initialize a serial port connection.
-
-        Args:
-            port (str): The serial port (e.g., '/dev/ttyACM0').
-            baud_rate (int): The baud rate for the serial communication.
-            timeout (float): Timeout for read operations, in seconds.
-        """
-        self.port = port
-        self.baud_rate = baud_rate
-        self.timeout = timeout
-        self.serial_connection = None
-
-    def open(self):
-        """
-        Open the serial connection.
-        """
-        try:
-            self.serial_connection = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
-            print(f"[INFO] Serial connection opened on {self.port} at {self.baud_rate} baud.")
-            #self.write(f'[INFO] Serial Radio connection established on {self.port} at {self.baud_rate} baud.\n')
-        except serial.SerialException as e:
-            print(f"[ERROR] Failed to open serial port {self.port}:\n{e}")
-
-    def close(self):
-        """
-        Close the serial connection.
-        """
-        if self.serial_connection and self.serial_connection.is_open:
-            print(f"[INFO] Serial connection on {self.port} closed.")
-            #self.write(f'[INFO] Radio connection on {self.port} closed.\n')
-            self.serial_connection.close()
-        else:
-            print(f"[WARNING] Serial connection on {self.port} is already closed.")
-
-    def write(self, data):
-        """
-        Write data to the serial port.
-        """
-        if self.serial_connection and self.serial_connection.is_open:
-            if isinstance(data, str):
-                data = data.encode()  # Convert string to bytes
-            self.serial_connection.write(data)
-            print(f"[INFO] Sent data: {data}")
-        else:
-            print(f"[ERROR] Serial connection on {self.port} is not open.")
-        time.sleep(0.25)
-
-    def is_open(self):
-        """
-        Check if the serial connection is open.
-
-        Returns:
-            bool: True if the serial connection is open, False otherwise.
-        """
-        return self.serial_connection and self.serial_connection.is_open
-
-
-class CircularButton:
-    def __init__(self, mode_frame, row, col, bg):
-         # Manual Mode Button
-        self.button = tk.Canvas(mode_frame, width=150, height=150, bg=bg, highlightthickness=0)
-        self.button.grid(row=row, column=col, padx=30)
-        
-    def set(self, text, size, fill):
-        self.button.create_oval(10, 10, 120, 120, fill=fill, outline="")
-        self.text = self.button.create_text(65, 65, text=text, fill=FG_COLOR, font=("Segoe UI", size, "bold"))
-
-    def bind(self, handler):
-        self.handler = handler
-        self.button.tag_bind(self.text, "<Button-1>", lambda e: self.handler())
-
-class GenesisGUI:
+class GUI:
     def __init__(self, root):
         self.root = root
         self.selected_port = tk.StringVar()
@@ -96,7 +22,7 @@ class GenesisGUI:
         self.radio = None
 
         self.root.title("Genesis Control Panel")
-        self.root.geometry("900x900")  # Increased window size
+        self.root.geometry("900x900") 
         self.root.configure(bg=BG_COLOR)
         self.create_widgets()
         
@@ -421,11 +347,3 @@ class GenesisGUI:
     def run(self):
         """Run the GUI main loop."""
         self.root.mainloop()
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = GenesisGUI(root)
-    app.run()
-
-
