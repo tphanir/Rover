@@ -28,7 +28,7 @@ def voice(radio, mega):
     
     result = subprocess.run(['docker', 'stop', 'voice-nav'])
     result = subprocess.run(['docker', 'rm', 'voice-nav'])
-    result = subprocess.run(['./script.sh'])
+    result = subprocess.run(['./scripts/docker.sh'])
     
     mega.write('Manual\n'.encode())
 
