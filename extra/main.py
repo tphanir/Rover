@@ -1,20 +1,258 @@
 import numpy as np
 import cv2
 import time
-import threading
 import re
-import subprocess
+import serial
 import pyrealsense2 as rs
-import os
 
 
-from SerialHandler import SerialHandler
-from Camera import Camera
-from VoiceHandler import voice
-from ManualHandler import manual
+class SerialHandler:
+    def __init__(self, port, baud_rate, timeout=1):
+        """
+        Initialize a serial port connection.
+
+        Args:
+            port (str): The serial port (e.g., '/dev/ttyACM0').
+            baud_rate (int): The baud rate for the serial communication.
+            timeout (float): Timeout for read operations, in seconds.
+        """
+        self.port = port
+        self.baud_rate = baud_rate
+        self.timeout = timeout
+        self.serial_connection = None
+
+    def open(self):
+        """
+        Open the serial connection.
+        """
+        try:
+            self.serial_connection = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
+            print(f"[INFO] Serial connection opened on {self.port} at {self.baud_rate} baud.")
+            self.write(f'[INFO] Serial Radio connection established on {self.port} at {self.baud_rate} baud.\n')
+        except serial.SerialException as e:
+            print(f"[ERROR] Failed to open serial port {self.port}:\n{e}")
+
+    def close(self):
+        """
+        Close the serial connection.
+        """
+        if self.serial_connection and self.serial_connection.is_open:
+            print(f"[INFO] Serial connection on {self.port} closed.")
+            self.write(f'[INFO] Radio connection on {self.port} closed.\n')
+            self.serial_connection.close()
+        else:
+            print(f"[WARNING] Serial connection on {self.port} is already closed.")
+
+    def write(self, data):
+        """
+        Write data to the serial port.
+
+        Args:
+            data (str or bytes): Data to send.
+        """
+        if self.serial_connection and self.serial_connection.is_open:
+            if isinstance(data, str):
+                data = data.encode()  # Convert string to bytes
+            self.serial_connection.write(data)
+            print(f"[INFO] Sent data: {data}")
+        else:
+            print(f"[ERROR] Serial connection on {self.port} is not open.")
+        
+        time.sleep(0.25)
+        
+
+    def read(self, size=1):
+        """
+        Read data from the serial port.
+
+        Args:
+            size (int): Number of bytes to read.
+
+        Returns:
+            bytes: Data read from the serial port.
+        """
+        if self.serial_connection and self.serial_connection.is_open:
+            try:
+                data = self.serial_connection.read(size)
+                print(f"[INFO] Received data: {data}")
+                return data
+            except serial.SerialTimeoutException:
+                print("[WARNING] Read timeout occurred.")
+        else:
+            print(f"[ERROR] Serial connection on {self.port} is not open.")
+        return None
+
+    def is_open(self):
+        """
+        Check if the serial connection is open.
+
+        Returns:
+            bool: True if the serial connection is open, False otherwise.
+        """
+        return self.serial_connection and self.serial_connection.is_open
 
 
-def semiauto(radio, mega):
+class Camera:
+    def __init__(self, width=640, height=480, fps=30, obstacle_distance_m=1.0, decimation_magnitude=2, holes_fill=3):
+        """
+        Initialize the RealSense camera pipeline, configuration, and parameters.
+
+        Args:
+            width (int): Width of the depth stream resolution.
+            height (int): Height of the depth stream resolution.
+            fps (int): Frames per second for the depth stream.
+            obstacle_distance_m (float): Distance threshold in meters for detecting obstacles.
+            decimation_magnitude (int): Downsample factor for decimation filter.
+            holes_fill (int): Fill option for the spatial filter (0 to 5, higher values fill larger holes).
+        """
+        self.width = width
+        self.height = height
+        self.fps = fps
+        self.obstacle_distance_m = obstacle_distance_m
+        self.decimation_magnitude = decimation_magnitude
+        self.holes_fill = holes_fill
+
+        self.pipeline = None
+        self.depth_scale = None
+        self.obstacle_distance_units = None
+
+
+        # Initialize and configure the pipeline
+        self._initialize_camera()
+        # Set depth scale and distance threshold
+        self._retrieve_depth_scale()
+        self.obstacle_distance_units = self.obstacle_distance_m / self.depth_scale
+
+    def _initialize_camera(self):
+        """Initialize the RealSense pipeline and configure the depth stream."""
+        self.pipeline = rs.pipeline()
+        config = rs.config()
+        config.enable_stream(rs.stream.depth, self.width, self.height, rs.format.z16, self.fps)
+
+        # Start the pipeline
+        self.profile = self.pipeline.start(config)
+        print('[INFO] Pipeline started.')
+
+        # Allow camera to stabilize
+        time.sleep(3.0)
+
+    def _retrieve_depth_scale(self):
+        """Retrieve the depth sensor's scale in meters per depth unit."""
+        depth_sensor = self.profile.get_device().first_depth_sensor()
+        self.depth_scale = depth_sensor.get_depth_scale()
+        
+    def setup_filters(self):
+        """Set up RealSense filters (optional)."""
+        # Decimation filter
+        self.decimation_filter = rs.decimation_filter()
+        self.decimation_filter.set_option(rs.option.filter_magnitude, self.decimation_magnitude)
+
+        # Spatial filter
+        self.spatial_filter = rs.spatial_filter()
+        self.spatial_filter.set_option(rs.option.holes_fill, self.holes_fill)
+
+        # Hole-filling filter
+        self.hole_filling_filter = rs.hole_filling_filter()
+
+        
+    def get_obstacle_distance_threshold(self):
+        """
+        Get the obstacle distance threshold in depth units.
+        
+        Returns:
+            float: Distance threshold in depth units.
+        """
+        return self.obstacle_distance_units
+
+    def capture_frame(self):
+        """
+        Capture a single frame of depth data from the camera.
+
+        Returns:
+            numpy.ndarray: The depth frame as a 2D array.
+        """
+        frames = self.pipeline.wait_for_frames()
+        depth_frame = frames.get_depth_frame()
+        if not depth_frame:
+            return None
+        return depth_frame
+
+    def apply_filters(self, depth_frame):
+        """
+        Apply RealSense filters to the depth frame.
+
+        Args:
+            depth_frame (pyrealsense2.depth_frame): The input depth frame.
+
+        Returns:
+            pyrealsense2.depth_frame: The filtered depth frame.
+        """
+        filtered_frame = self.decimation_filter.process(depth_frame)
+        filtered_frame = self.spatial_filter.process(filtered_frame)
+        filtered_frame = self.hole_filling_filter.process(filtered_frame)
+        return filtered_frame
+
+    def stop(self):
+        """Stop the camera pipeline."""
+        if self.pipeline:
+            self.pipeline.stop()
+            
+    def __del__(self):
+        """Ensure the pipeline is stopped on object destruction."""
+        self.stop()
+
+def _process_command(self, command):
+    if command == 'Autonomous':
+        self.autonomous = True
+    elif command == 'Manual':
+        self.manual = True
+    elif command == 'stop':
+        self.autonomous = False
+        self.manual = False
+    elif self.manual:
+        if command == 'W':
+            self.esp.write(f"f\n".encode('utf-8'))
+        elif command == 'A':
+            self.esp.write(f"l\n".encode('utf-8'))
+        elif command == 'S':
+            self.esp.write(f"b\n".encode('utf-8'))
+        elif command == 'D':
+            self.esp.write(f"r\n".encode('utf-8'))
+        elif command == 'X':
+            self.esp.write(f"s\n".encode('utf-8'))
+
+
+def manual(radio, esp):
+    """
+    Handles manual control of a robot via serial commands.
+
+    :param esp: Serial connection to the robot.
+    """
+ 
+    while True:
+        # Get input from the user
+        if radio.serial_connection.in_waiting > 0:
+            command = radio.serial_connection.readline().decode('utf-8').strip()
+
+        # Map commands to robot actions
+            if command == 'W':
+                esp.write(f"f\n".encode())
+            elif command == 'A':
+                esp.write(f"l\n".encode())
+            elif command == 'S':
+                esp.write(f"b\n".encode())
+            elif command == 'D':
+                esp.write(f"r\n".encode())
+            elif command == 'stop':
+                esp.write(f's\n'.encode())
+            elif command == 'return':
+                esp.write(f'return\n'.encode())
+                break
+            else:
+                print("Invalid command. Please try again.")
+
+
+def semiauto(radio, esp):
     # --------------------------------------------------
     # 1. Configure and start the RealSense pipeline
     # --------------------------------------------------
@@ -67,11 +305,11 @@ def semiauto(radio, mega):
     # --------------------------------------------------
     try:
         while True:
-            
+
             if radio.serial_connection and radio.serial_connection.in_waiting > 0:
                 data = radio.serial_connection.readline().decode('utf-8').strip()
                 if data == "return":
-                    mega.write("return\n".encode())
+                    esp.write("return\n".encode())
                     break
 
             frames = pipeline.wait_for_frames()
@@ -173,8 +411,8 @@ def semiauto(radio, mega):
             
             if len(obstacles) == 0:
                 #print('F')
-                mega.write(f"f\n".encode('utf-8'))
-                #print("[INFO] Moving forward.")
+                esp.write(f"f\n".encode('utf-8'))
+                print("[INFO] No obstacles < 1m (with edge). Moving forward.")
             else:
                 # Count obstacles, do a simple left/right check using average contour center
                 # print(f"[INFO] Detected {len(obstacles)} obstacle(s).")
@@ -196,7 +434,7 @@ def semiauto(radio, mega):
                     # Calculate rotation angle to clear obstacle
                     rightmost_point = None
                     for i, c in enumerate(obstacles):
-                        # Use avg_cXs[i] to get the corrmegaonding avg_cX for the current obstacle
+                        # Use avg_cXs[i] to get the corresponding avg_cX for the current obstacle
                         if avg_cXs[i] < mid_width:  # Only consider obstacles on the left side
                             x, y, w, h = cv2.boundingRect(c)
                             curr_rightmost_point = x + w  # Rightmost point of the object
@@ -207,14 +445,14 @@ def semiauto(radio, mega):
                         total_rotation_angle = angle_to_clear + 10  # Add 10 degrees
                         #print(f"R by {total_rotation_angle:.2f} degrees to clear.")
                         # print(f"R {total_rotation_angle:.2f}")
-                        mega.write(f"r\n".encode('utf-8'))
+                        esp.write(f"r\n".encode('utf-8'))
                         sleep_time = total_rotation_angle/360 * complete_turn_time
                 else:
                     #print("Obstacle(s) mostly on RIGHT side => Move LEFT.")
                     # Calculate rotation angle to clear obstacle
                     leftmost_point = None
                     for i, c in enumerate(obstacles):
-                        # Use avg_cXs[i] to get the corrmegaonding avg_cX for the current obstacle
+                        # Use avg_cXs[i] to get the corresponding avg_cX for the current obstacle
                         if avg_cXs[i] > mid_width:  # Only consider obstacles on the right side
                             x, y, w, h = cv2.boundingRect(c)
                             curr_leftmost_point = x  # Leftmost point of the object
@@ -225,7 +463,7 @@ def semiauto(radio, mega):
                         total_rotation_angle = angle_to_clear + 10  # Add 10 degrees
                         #print(f"[INFO] Rotate LEFT by {total_rotation_angle:.2f} degrees to clear.")
                         #print(f"L {total_rotation_angle:.2f}")
-                        mega.write(f"l\n".encode('utf-8'))
+                        esp.write(f"l\n".encode('utf-8'))
                         sleep_time = total_rotation_angle/360 * complete_turn_time
 
             # --------------------------------------------------
@@ -252,9 +490,7 @@ def semiauto(radio, mega):
         cv2.destroyAllWindows()
 
 
-
-def fully_auto(radio, mega):
-
+def auto_helper(esp):
     # --------------------------------------------------
     # 1. Configure and start the RealSense pipeline
     # --------------------------------------------------
@@ -313,7 +549,7 @@ def fully_auto(radio, mega):
             if radio.serial_connection and radio.serial_connection.in_waiting > 0:
                 data = radio.serial_connection.readline().decode('utf-8').strip()
                 if data == "return":
-                    mega.write("return\n".encode())
+                    esp.write("return\n".encode())
                     break
 
             frames = pipeline.wait_for_frames()
@@ -414,20 +650,21 @@ def fully_auto(radio, mega):
             sleep_time = 0.5
             
             if len(obstacles) == 0 and forward_delay:
-                #print('[INFO] F')
-                mega.write(f"f\n".encode('utf-8'))
+                #print('F')
+                esp.write(f"f\n".encode('utf-8'))
                 sleep_time = forward_delay
                 time.sleep(sleep_time)
                 
                 forward_delay = None
                 moved_forward = True
 
+                print("[INFO] No obstacles < 1m (with edge). Moving forward.")
             
             elif len(obstacles) != 0:
-                mega.write('gps-stop\n'.encode())
+                esp.write('gps-stop\n'.encode())
                 # Count obstacles, do a simple left/right check using average contour center
                 # print(f"[INFO] Detected {len(obstacles)} obstacle(s).")
-                
+
                 # Compute average x-center of all obstacles
                 cX_sum = 0
                 avg_cXs = []
@@ -445,7 +682,7 @@ def fully_auto(radio, mega):
                     # Calculate rotation angle to clear obstacle
                     rightmost_point = None
                     for i, c in enumerate(obstacles):
-                        # Use avg_cXs[i] to get the corrmegaonding avg_cX for the current obstacle
+                        # Use avg_cXs[i] to get the corresponding avg_cX for the current obstacle
                         if avg_cXs[i] < mid_width:  # Only consider obstacles on the left side
                             x, y, w, h = cv2.boundingRect(c)
                             curr_rightmost_point = x + w  # Rightmost point of the object
@@ -456,14 +693,14 @@ def fully_auto(radio, mega):
                         total_rotation_angle = angle_to_clear + 10  # Add 10 degrees
                         #print(f"R by {total_rotation_angle:.2f} degrees to clear.")
                         # print(f"R {total_rotation_angle:.2f}")
-                        mega.write(f"r\n".encode('utf-8'))
+                        esp.write(f"r\n".encode('utf-8'))
                         sleep_time = total_rotation_angle/360 * complete_turn_time
                 else:
                     #print("Obstacle(s) mostly on RIGHT side => Move LEFT.")
                     # Calculate rotation angle to clear obstacle
                     leftmost_point = None
                     for i, c in enumerate(obstacles):
-                        # Use avg_cXs[i] to get the corrmegaonding avg_cX for the current obstacle
+                        # Use avg_cXs[i] to get the corresponding avg_cX for the current obstacle
                         if avg_cXs[i] > mid_width:  # Only consider obstacles on the right side
                             x, y, w, h = cv2.boundingRect(c)
                             curr_leftmost_point = x  # Leftmost point of the object
@@ -474,7 +711,7 @@ def fully_auto(radio, mega):
                         total_rotation_angle = angle_to_clear + 10  # Add 10 degrees
                         #print(f"[INFO] Rotate LEFT by {total_rotation_angle:.2f} degrees to clear.")
                         #print(f"L {total_rotation_angle:.2f}")
-                        mega.write(f"l\n".encode('utf-8'))
+                        esp.write(f"l\n".encode('utf-8'))
                         sleep_time = total_rotation_angle/360 * complete_turn_time
 
                 time.sleep(sleep_time)
@@ -494,10 +731,8 @@ def fully_auto(radio, mega):
             # 13. Break on ESC
             # --------------------------------------------------
             if moved_forward:
-                mega.write("s\n".encode())
-                mega.write('gps-resume\n'.encode())
+                esp.write('gps-resume\n'.encode())
                 moved_forward = False
-
 
             key = cv2.waitKey(1)
             if key == 27:  # ESC
@@ -510,96 +745,74 @@ def fully_auto(radio, mega):
         cv2.destroyAllWindows()
 
 
-def gps_set(radio, mega):
+
+def auto(radio, esp):
+    esp.write('gps-start\n'.encode())
     while True:
-        
         if radio.serial_connection.in_waiting > 0:
             command = radio.serial_connection.readline().decode('utf-8').strip()
             match = re.search(r"gps\s(-?\d+\.\d+),(-?\d+\.\d+)", command)
             if match:
                 latitude = float(match.group(1))
                 longitude = float(match.group(2))
-                mega.write(f'{latitude},{longitude}\n'.encode())
-                break
+                esp.write('gps-set\n'.encode())
+                esp.write(f'{latitude},{longitude}\n'.encode())
+                auto_helper(esp)
             elif command == 'return':
-                mega.write("return\n".encode())
-            
-                break
+                esp.write('return\n'.encode())
+                return
             else:
                 print("Coordinates not found")
 
 
 
-def forward(mega, radio):
-    buffer = bytearray()
+def gps(radio, esp):
+    esp.write('gps-start\n'.encode())
     while True:
-        if mega.serial_connection and mega.serial_connection.in_waiting > 0:
-            data = mega.serial_connection.read(1024)
-            buffer.extend(data)
+        if radio.serial_connection.in_waiting > 0:
+            command = radio.serial_connection.readline().decode('utf-8').strip()
+            match = re.search(r"gps\s(-?\d+\.\d+),(-?\d+\.\d+)", command)
+            if match:
+                latitude = float(match.group(1))
+                longitude = float(match.group(2))
+                esp.write('gps-set\n'.encode())
+                esp.write(f'{latitude},{longitude}\n'.encode())
+            elif command == 'return':
+                esp.write("return\n".encode())
+                break
+            else:
+                print("Coordinates not found")
 
-            while b'\n' in buffer:
-                line, _, buffer = buffer.partition(b'\n')
-                print(f"Received: {line}")
-
-def main():
-    # Define serial connections
-    radio = SerialHandler(port='/dev/ttyUSB0', baud_rate=57600, timeout=1)
-    mega = SerialHandler(port='/dev/ttyACM0', baud_rate=115200, timeout=1)
-
-    time.sleep(10)
-
-    radio.open()
-    mega.open()
-    
-    if mega.is_open and radio.is_open:
-        thread = threading.Thread(target=forward, args=(mega, radio, ), daemon=True)
-        thread.start()
-
-    try:
-        while True:    
-            if radio.serial_connection and radio.serial_connection.in_waiting > 0:
-                data = radio.serial_connection.readline().decode('utf-8').strip()
-
-                print(f'[RECVD] {data}')
-                
-                if data == 'Manual':
-                    mega.write("Manual\n".encode())
-                    manual(radio, mega)
-
-                elif data == 'Semi-Autonomous':
-                    mega.write("Semi-Autonomous\n".encode())
-                    semiauto(radio, mega)
-
-                elif data == 'Full-Autonomous':
-                    mega.write("Full-Autonomous\n".encode())
-                    fully_auto(radio, mega)
-
-                elif data == "Do-Calibration":
-                    mega.write("Do-Calibration\n".encode())
-
-                elif data == 'Set-Coordinates':
-                    mega.write("Set-Coordinates\n".encode())
-                    gps_set(radio, mega)
-
-                elif data == "GPS-Only":
-                    mega.write("GPS-Only\n".encode())
-
-                elif data == "Voice-Nav":
-                    voice(radio, mega)
-
-
-                elif data == 'return':
-                    data = "return\n"
-                    mega.write(data.encode())
-    except:
-        print("\nExiting")
-        mega.close()
-        radio.close()
-        thread.join()
 
 if __name__ == "__main__":
-    main()
 
+    # Define serial connections
+    radio = SerialHandler(port='/dev/ttyUSB0', baud_rate=57600, timeout=1)
+    esp = SerialHandler(port='/dev/ttyUSB1', baud_rate=115200, timeout=1)
+
+    radio.open()
+    esp.open()
+
+    
+    #auto(radio,esp)
+
+    while True:
+        if radio.serial_connection and radio.serial_connection.in_waiting > 0:
+            data = radio.serial_connection.readline().decode('utf-8').strip()
+            print(f'[RECVD] {data}')
+            if data == 'Manual':
+                esp.write("Manual\n".encode())
+                manual(radio, esp)
+            elif data == 'Semi-Autonomous':
+                esp.write("Semi-Autonomous\n".encode())
+                semiauto(radio, esp)
+            elif data == 'Full-Autonomous':
+                auto(radio, esp)
+            elif data == 'set':
+                gps(radio, esp)
+            elif data == 'return':
+                data = "return\n"
+                esp.write(data.encode())
 
 
     
