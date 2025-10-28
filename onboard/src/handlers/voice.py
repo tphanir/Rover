@@ -31,10 +31,11 @@ def voice(radio, mega):
     result = subprocess.run(['./script.sh'])
     
     mega.write('Manual\n'.encode())
+
     while True:
         with open('VoiceNav/data.txt', 'r') as file:
-            content = file.read() 
-            do(content, 0.9)
+            action = file.read() 
+            do(action, 0.9)
 
         if radio.serial_connection and radio.serial_connection.in_waiting > 0:
             data = radio.serial_connection.readline()

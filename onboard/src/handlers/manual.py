@@ -1,5 +1,4 @@
 def manual(radio, mega):
- 
     while True:
         # Get input from the user
         if radio.serial_connection.in_waiting > 0:

@@ -11,6 +11,7 @@ class SerialHandler:
             baud_rate (int): The baud rate for the serial communication.
             timeout (float): Timeout for read operations, in seconds.
         """
+        
         self.port = port
         self.baud_rate = baud_rate
         self.timeout = timeout
@@ -20,6 +21,7 @@ class SerialHandler:
         """
         Open the serial connection.
         """
+        
         try:
             self.serial_connection = serial.Serial(self.port, self.baud_rate, timeout=self.timeout)
             print(f"[INFO] Serial connection opened on {self.port} at {self.baud_rate} baud.")
@@ -31,6 +33,7 @@ class SerialHandler:
         """
         Close the serial connection.
         """
+        
         if self.serial_connection and self.serial_connection.is_open:
             print(f"[INFO] Serial connection on {self.port} closed.")
             self.write(f'[INFO] Radio connection on {self.port} closed.\n')
@@ -45,6 +48,7 @@ class SerialHandler:
         Args:
             data (str or bytes): Data to send.
         """
+        
         if self.serial_connection and self.serial_connection.is_open:
             if isinstance(data, str):
                 data = data.encode()  # Convert string to bytes
@@ -66,6 +70,7 @@ class SerialHandler:
         Returns:
             bytes: Data read from the serial port.
         """
+        
         while True:
             if self.serial_connection.in_waiting > 0:
                 line = self.serial_connection.readline().decode('utf-8').strip()
@@ -79,4 +84,5 @@ class SerialHandler:
         Returns:
             bool: True if the serial connection is open, False otherwise.
         """
+        
         return self.serial_connection and self.serial_connection.is_open
