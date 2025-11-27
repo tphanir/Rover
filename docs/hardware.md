@@ -14,8 +14,6 @@ The rover uses a **triple bogie suspension system** on each side, enabling high 
 - **Obstacle Handling:** The suspension can climb small obstacles and traverse gaps without wheel lift or instability.
 - **Shock Absorption:** The interconnected bogies naturally dampen shocks, protecting onboard electronics and extending component lifespan.
 
----
-
 ## Wheel Design Comparison
 
 Two wheel designs were evaluated: a **COTS (Commercial Off-The-Shelf) wheel** and an **in-house 3D-printed wheel**.
