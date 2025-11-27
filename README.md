@@ -1,6 +1,6 @@
 # Rover Genesis
 
-<img src="docs/media/main/rover.jpg" width="400">
+<img src="docs/media/main/rover-v1-COTS-wheels.jpg" width="400">
 
 **Genesis** is a semi-autonomous rover platform designed for outdoor exploration, GPS-guided waypoint navigation, and obstacle avoidance. The system operates using a hybrid architecture: high-level computer vision and decision-making are handled by an **Nvidia Jetson Nano**, while real-time motor control and sensor integration are managed by an **Arduino Mega**.
 
