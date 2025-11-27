@@ -1,14 +1,9 @@
-<h1>Genesis </h1>
+# 👥 Contributors
 
-<hr>
-<h2 id='contributors'>Contributors</h2>
-<ol>
-<li><a href="https://www.linkedin.com/in/aiden-dsouza/" target="_blank">Aiden Ross D'souza</a></li>
-<li><a href="mailto:phanirajtelukunta@gmail.com" target="_blank">Telukunta Phani Raj</a></li>
-<li><a href="https://www.linkedin.com/in/koyaneni-yaswanth-988a92220/" target="_blank">Koyaneni Yashwant</a></li>
-<li><a href="https://www.linkedin.com/in/shubham-pandere-72b240259/?originalSubdomain=in">Shubham Pandere</a></li>
-<li><a href="https://www.linkedin.com/in/yuvraj-gupta11/" target="_blank">Yuvraj Gupta</a></li>
-</ol>
+The **Rover - Genesis** project is by the following contributors under the guidance of **[Dr. Shital Chiddarwar](https://scholar.google.co.in/citations?user=B9InqKQAAAAJ&hl=en)**:
 
-<hr>
-<hr>
+1. [Aiden Ross D'souza](https://www.linkedin.com/in/aiden-dsouza/)
+2. [Telukunta Phani Raj](mailto:phanirajtelukunta@gmail.com)
+3. [Koyaneni Yashwant](https://www.linkedin.com/in/koyaneni-yaswanth-988a92220/)
+4. [Shubham Pandere](https://www.linkedin.com/in/shubham-pandere-72b240259/?originalSubdomain=in)
+5. [Yuvraj Gupta](https://www.linkedin.com/in/yuvraj-gupta11/)
