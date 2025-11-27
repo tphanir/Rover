@@ -12,7 +12,8 @@ Contains renders from the CAD software used to model the chassis.
 ### main/ (System Overview)
 General images related to the rover architecture.
 * **architecture-diagram.png**: A block diagram connecting the Base Station, Jetson Nano, and Arduino.
-* **rover.jpg**: A photograph of the assembled rover.
+* **rover-v1-COTS-wheels.jpg**: A photograph of the assembled rover with COTS wheels.
+* **rover-v1-3D-printed-wheels**: A photograph of the assembled rover with custom 3D printed wheels.
 
 ### obstacle_detection/ (Computer Vision Debug)
 Visual outputs from the autonomous navigation module showing how the rover interprets depth data.

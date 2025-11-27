@@ -68,7 +68,7 @@ This repository is organized as follows:
 * **Sensors:** Ublox Neo M8N GPS, HMC5883L Magnetometer
 * **Actuation:** BTS7960 43A Motor Drivers
 * **Communication:** 3DR 433MHz Telemetry Radio
-* **Power:** 3S LiPo Battery (11.1V)
+* **Power:** 4S LiPo Battery (14.8V)
 
 For a detailed breakdown of the electronics, refer to `docs/hardware.md`.
 
