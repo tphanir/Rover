@@ -2,7 +2,7 @@
 
 **Genesis** is a semi-autonomous rover platform designed for exploration, obstacle avoidance, and voice-controlled navigation. The system is split into two main components: the **Onboard** system (Jetson Nano + Arduino Mega) and the **Base Station** (Control Laptop).
 
-## 📂 Project Structure
+## Project Structure
 
 - **`base_station/`**: The ground control software. Features a Python/Tkinter GUI for sending commands (Manual, Auto, GPS) and viewing status.
 - **`onboard/`**: The brain of the rover. Runs on an Nvidia Jetson Nano. Handles computer vision (RealSense), decision making, and serial communication with the Arduino.
@@ -19,7 +19,7 @@
 ### Installation
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/IvLabs/Rover.git](https://github.com/IvLabs/Rover.git)
+    git clone https://github.com/IvLabs/Rover.git
     ```
 2.  **Setup Onboard (Jetson):**
     Navigate to `onboard/` and install dependencies (see `onboard/README.md`).

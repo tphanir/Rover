@@ -23,19 +23,22 @@ Handles inputs, communication, and command processing:
 ### helpers/
 - **forward.py** — Forwards messages from Arduion mega to base_station.
 
+### main.py
+- Main entry point — connects all modules for complete rover operation.
+
 ### modules/
 - **Camera.py** — Camera handling and video stream processing.
-
-### VoiceNav/
-- **main.py** — Voice navigation control.  
-- **data.txt** — Voice data or recognized commands.  
-- **echo.sh** — Voice test script.
 
 ### scripts/
 - **docker.sh** — Docker script for setting up Jetson-Voice modules.
 - **echo.sh** — Simply echoes the VoiceNav/data.txt content.
 
-### main.py
-- Main entry point — connects all modules for complete rover operation.
+### voice_nav/
+- **main.py** — Voice navigation control.  
+- **data.txt** — Voice data or recognized commands.  
+- **echo.sh** — Voice test script.
+
+
+
 
 ---

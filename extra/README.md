@@ -1,27 +1,35 @@
-# extra/
+# Extra / Experiments
 
-This directory contains **miscellaneous experiments** developed during the evolution of the **Rover** project.  
-While not part of the main rover control system, these files served as important learning points for specific features, hardware integration and testing purposes.
+This directory contains **miscellaneous experiments** and legacy code developed during the evolution of the **Rover** project.  
+While not part of the main rover control system, these files served as important learning points for specific features, hardware integration, and testing.
 
 ---
 
 ## Overview
 
+### `detection/`
+- Contains multiple programs (`obstacle_x.py`) developed to test various Computer Vision (CV) methods for obstacle detection.
+- **Requirement:** Intel RealSense camera.
+
 ### `imu/`
 - Contains the IMU visualization and orientation tracking code (`imu.py`).
 - Visualizes 3D motion of the rover (roll, pitch, yaw) using **PyOpenGL** and **pygame**.
-- Works both with and without the physical ESP32-IMU connected:
-  - If connected → reads live orientation data.
-  - If not connected → runs in simulation mode showing a static/no-movement cube.
+- **Modes:**
+  - **Connected:** Reads live orientation data from the ESP32-IMU.
+  - **Disconnected:** Runs in simulation mode showing a static/rotating cube.
 
-### `serial_test/`
-- Contains serial communcation testing code. (`radio.py')
-- It reads and relays command data from control computer (base station).
+### `legacy/`
+- Contains older versions of the main loop or scratchpad code (`main.py`) used for testing logic before integration into the `onboard` system.
 
+### `serial/`
+- Contains serial communication testing code (`radio.py`).
+- Used to verify reading and relaying command data from the control computer (Base Station) via LoRa/Radio.
 
-### `detection`
-- Contains multiple programs (obstacle_x.py) that have been developed for obstacle detection applying various CV methods.
-- Requires realsense camera to test.
+### `voice/`
+- Contains standalone voice recognition tests (`voice.py`).
+- Used to debug the voice command subsystem in isolation.
+
+---
 
 ## Note
-- None of these modules are required for main rover execution.  
+- None of these modules are required for the main rover execution.
